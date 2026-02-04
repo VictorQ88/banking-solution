@@ -10,16 +10,18 @@ public class ClientMapper {
             return null;
         }
 
-        ClientDTO dto = new ClientDTO();
-        dto.name = client.getName();
-        dto.gender = client.getGender();
-        dto.age = client.getAge();
-        dto.identification = client.getIdentification();
-        dto.address = client.getAddress();
-        dto.phone = client.getPhone();
-        dto.clientId = client.getClientId();
-        dto.active = client.getActive();
-        return dto;
+        return new ClientDTO(
+                client.getId(),
+                client.getName(),
+                client.getGender(),
+                client.getAge(),
+                client.getIdentification(),
+                client.getAddress(),
+                client.getPhone(),
+                client.getClientId(),
+                client.getPassword(),
+                client.getActive()
+        );
     }
 
     public static Client toEntity(ClientDTO dto) {
@@ -27,18 +29,17 @@ public class ClientMapper {
             return null;
         }
 
-        Client client = new Client(
-                dto.name,
-                dto.gender,
-                dto.age,
-                dto.identification,
-                dto.address,
-                dto.phone,
-                dto.clientId,
-                dto.password,
-                dto.active
+        return new Client(
+                dto.getName(),
+                dto.getGender(),
+                dto.getAge(),
+                dto.getIdentification(),
+                dto.getAddress(),
+                dto.getPhone(),
+                null,
+                dto.getPassword(),
+                dto.getActive()
         );
-        return client;
     }
 
     public static void updateEntity(Client entity, ClientDTO dto) {
@@ -46,13 +47,13 @@ public class ClientMapper {
             return;
         }
 
-        entity.setName(dto.name);
-        entity.setGender(dto.gender);
-        entity.setAge(dto.age);
-        entity.setIdentification(dto.identification);
-        entity.setAddress(dto.address);
-        entity.setPhone(dto.phone);
-        entity.setPassword(dto.password);
-        entity.setActive(dto.active);
+        entity.setName(dto.getName());
+        entity.setGender(dto.getGender());
+        entity.setAge(dto.getAge());
+        entity.setIdentification(dto.getIdentification());
+        entity.setAddress(dto.getAddress());
+        entity.setPhone(dto.getPhone());
+        entity.setPassword(dto.getPassword());
+        entity.setActive(dto.getActive());
     }
 }

@@ -26,11 +26,11 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDTO create(ClientDTO dto) {
 
-        log.info("Creating client with identification = {}", dto.identification);
+        log.info("Creating client with identification={}", dto.getIdentification());
 
-        repository.findByIdentification(dto.identification)
+        repository.findByIdentification(dto.getIdentification())
                 .ifPresent(c -> {
-                    log.warn("Client already exists with identification = {}", dto.identification);
+                    log.warn("Client already exists identification={}", dto.getIdentification());
                     throw new IllegalArgumentException("Client already exists");
                 });
 
@@ -41,12 +41,8 @@ public class ClientServiceImpl implements ClientService {
 
         Client saved = repository.save(entity);
 
-        log.info(
-                "Client created successfully id={}, clientId={}, identification={}",
-                saved.getId(),
-                generatedClientId,
-                saved.getIdentification()
-        );
+        log.info("Client created id={}, clientId={}, identification={}",
+                saved.getId(), saved.getClientId(), saved.getIdentification());
 
         return ClientMapper.toDto(saved);
     }
@@ -76,21 +72,12 @@ public class ClientServiceImpl implements ClientService {
                     return new IllegalArgumentException("Client not found");
                 });
 
-        log.debug(
-                "Current client state id={}, identification={}",
-                entity.getId(),
-                entity.getIdentification()
-        );
-
         ClientMapper.updateEntity(entity, dto);
 
         Client saved = repository.save(entity);
 
-        log.info(
-                "Client updated successfully id={}, identification={}",
-                saved.getId(),
-                saved.getIdentification()
-        );
+        log.info("Client updated id={}, identification={}",
+                saved.getId(), saved.getIdentification());
 
         return ClientMapper.toDto(saved);
     }

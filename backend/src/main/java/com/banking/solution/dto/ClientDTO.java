@@ -7,41 +7,47 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
 public class ClientDTO {
+
+    private Long id;
 
     @NotBlank
     @Size(max = 120)
-    public String name;
+    private String name;
 
     @NotBlank
     @Size(max = 20)
-    public String gender;
+    private String gender;
 
     @Min(18)
     @Max(130)
-    public Integer age;
+    private Integer age;
 
     @NotBlank
     @Size(max = 20)
-    public String identification;
+    private String identification;
 
     @NotBlank
     @Size(max = 200)
-    public String address;
+    private String address;
 
     @NotBlank
     @Size(max = 20)
-    public String phone;
+    private String phone;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    public String clientId;
+    private String clientId;
 
     @NotBlank
     @Size(min = 4, max = 120)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    public String password;
+    private String password;
 
     @NotNull
-    public Boolean active;
+    private Boolean active;
 }
