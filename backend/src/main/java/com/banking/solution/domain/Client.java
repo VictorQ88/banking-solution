@@ -8,10 +8,12 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "clients")
 @Getter
+@Setter
 @NoArgsConstructor
 public class Client extends Person {
 

@@ -3,10 +3,31 @@ package com.banking.solution.utils;
 import com.banking.solution.domain.Client;
 import com.banking.solution.dto.ClientDTO;
 
-public final class ClientMapper {
+public class ClientMapper {
+
+    public static ClientDTO toDto(Client client) {
+        if (client == null) {
+            return null;
+        }
+
+        ClientDTO dto = new ClientDTO();
+        dto.name = client.getName();
+        dto.gender = client.getGender();
+        dto.age = client.getAge();
+        dto.identification = client.getIdentification();
+        dto.address = client.getAddress();
+        dto.phone = client.getPhone();
+        dto.clientId = client.getClientId();
+        dto.active = client.getActive();
+        return dto;
+    }
 
     public static Client toEntity(ClientDTO dto) {
-        return new Client(
+        if (dto == null) {
+            return null;
+        }
+
+        Client client = new Client(
                 dto.name,
                 dto.gender,
                 dto.age,
@@ -17,18 +38,22 @@ public final class ClientMapper {
                 dto.password,
                 dto.active
         );
+        return client;
     }
 
-    public static ClientDTO toDto(Client entity) {
-        ClientDTO dto = new ClientDTO();
-        dto.name = entity.getName();
-        dto.gender = entity.getGender();
-        dto.age = entity.getAge();
-        dto.identification = entity.getIdentification();
-        dto.address = entity.getAddress();
-        dto.phone = entity.getPhone();
-        dto.clientId = entity.getClientId();
-        dto.active = entity.getActive();
-        return dto;
+    public static void updateEntity(Client entity, ClientDTO dto) {
+        if (entity == null || dto == null) {
+            return;
+        }
+
+        entity.setName(dto.name);
+        entity.setGender(dto.gender);
+        entity.setAge(dto.age);
+        entity.setIdentification(dto.identification);
+        entity.setAddress(dto.address);
+        entity.setPhone(dto.phone);
+        entity.setClientId(dto.clientId);
+        entity.setPassword(dto.password);
+        entity.setActive(dto.active);
     }
 }
