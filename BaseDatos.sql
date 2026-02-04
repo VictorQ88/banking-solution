@@ -1,0 +1,13 @@
+CREATE TABLE clients (
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR(120) NOT NULL,
+  gender VARCHAR(20) NOT NULL,
+  age INT NOT NULL,
+  identification VARCHAR(20) NOT NULL,
+  address VARCHAR(200) NOT NULL,
+  phone VARCHAR(20) NOT NULL,
+  client_id VARCHAR(40) NOT NULL,
+  password VARCHAR(120) NOT NULL,
+  active BOOLEAN NOT NULL
+);
+
