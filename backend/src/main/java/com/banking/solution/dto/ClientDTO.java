@@ -34,12 +34,11 @@ public class ClientDTO {
     @Size(max = 20)
     public String phone;
 
-    @NotBlank
-    @Size(max = 40)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public String clientId;
 
     @NotBlank
-    @Size(min = 6, max = 120)
+    @Size(min = 4, max = 120)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String password;
 

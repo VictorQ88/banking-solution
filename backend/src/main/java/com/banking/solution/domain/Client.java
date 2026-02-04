@@ -23,7 +23,7 @@ public class Client extends Person {
     private String clientId;
 
     @NotBlank
-    @Size(min = 6, max = 120)
+    @Size(min = 4, max = 120)
     @Column(nullable = false, length = 120)
     private String password;
 

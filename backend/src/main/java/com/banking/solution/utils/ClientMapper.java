@@ -52,7 +52,6 @@ public class ClientMapper {
         entity.setIdentification(dto.identification);
         entity.setAddress(dto.address);
         entity.setPhone(dto.phone);
-        entity.setClientId(dto.clientId);
         entity.setPassword(dto.password);
         entity.setActive(dto.active);
     }
