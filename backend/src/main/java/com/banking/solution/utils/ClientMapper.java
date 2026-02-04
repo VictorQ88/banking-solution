@@ -53,7 +53,7 @@ public class ClientMapper {
         entity.setIdentification(dto.getIdentification());
         entity.setAddress(dto.getAddress());
         entity.setPhone(dto.getPhone());
-        entity.setPassword(dto.getPassword());
+        // entity.setPassword(dto.getPassword());
         entity.setActive(dto.getActive());
     }
 }
