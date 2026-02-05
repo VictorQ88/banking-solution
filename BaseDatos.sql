@@ -15,6 +15,8 @@ CREATE TABLE clients (
     CONSTRAINT uk_clients_client_id UNIQUE (client_id)
 );
 
+CREATE SEQUENCE clientid_seq START WITH 1 INCREMENT BY 1;
+
 GRANT SELECT, INSERT, UPDATE, DELETE
 ON TABLE clients
 TO banking_user;
@@ -22,9 +24,6 @@ TO banking_user;
 GRANT USAGE, SELECT
 ON SEQUENCE clients_id_seq
 TO banking_user;
-
---sequence for client_id
-CREATE SEQUENCE clientid_seq START WITH 1 INCREMENT BY 1;
 
 GRANT USAGE, SELECT
 ON SEQUENCE clientid_seq
@@ -44,6 +43,9 @@ CREATE TABLE accounts (
     CONSTRAINT fk_accounts_client FOREIGN KEY (client_id) REFERENCES clients(id)
 );
 
+-- sequence for numbering accounts
+CREATE SEQUENCE account_number_seq START WITH 1000000000 INCREMENT BY 1;
+
 GRANT SELECT, INSERT, UPDATE, DELETE
 ON TABLE accounts
 TO banking_user;
@@ -52,12 +54,10 @@ GRANT USAGE, SELECT
 ON SEQUENCE accounts_id_seq
 TO banking_user;
 
--- sequence for numbering accounts
-CREATE SEQUENCE account_number_seq START WITH 1000000000 INCREMENT BY 1;
-
 GRANT USAGE, SELECT
 ON SEQUENCE account_number_seq
 TO banking_user;
+
 
 -- Movements
 CREATE TABLE movements (
@@ -78,3 +78,5 @@ TO banking_user;
 GRANT USAGE, SELECT
 ON SEQUENCE movements_id_seq
 TO banking_user;
+
+CREATE INDEX idx_movements_account_id ON movements(account_id);

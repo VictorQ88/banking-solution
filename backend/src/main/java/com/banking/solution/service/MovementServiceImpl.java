@@ -6,9 +6,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.banking.solution.domain.Movement;
 import com.banking.solution.dto.MovementDTO;
+import com.banking.solution.exception.NotFoundException;
 import com.banking.solution.repository.AccountRepository;
 import com.banking.solution.repository.MovementRepository;
+import com.banking.solution.utils.MovementMapper;
 
 @Service
 public class MovementServiceImpl implements MovementService {
@@ -33,12 +36,17 @@ public class MovementServiceImpl implements MovementService {
 
     @Override
     public List<MovementDTO> findAll() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        return movementRepository.findAll()
+                .stream()
+                .map(MovementMapper::toDTO)
+                .toList();
     }
 
     @Override
     public MovementDTO findById(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        Movement m = movementRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Movement not found"));
+        return MovementMapper.toDTO(m);
     }
 
     @Override
@@ -48,7 +56,13 @@ public class MovementServiceImpl implements MovementService {
 
     @Override
     public void delete(Long id) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        movementRepository.findById(id)
+                .ifPresentOrElse(
+                        movementRepository::delete,
+                        () -> {
+                            throw new NotFoundException("Movement not found");
+                        }
+                );
     }
 
 }
