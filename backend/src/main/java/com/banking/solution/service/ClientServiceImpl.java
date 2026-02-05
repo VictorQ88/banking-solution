@@ -1,5 +1,7 @@
 package com.banking.solution.service;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -39,7 +41,11 @@ public class ClientServiceImpl implements ClientService {
 
         Client entity = ClientMapper.toEntity(dto);
 
-        String generatedClientId = clientIdGenerator.generate(); // changed
+        String encoded = Base64.getEncoder()
+                .encodeToString(entity.getPassword().getBytes(StandardCharsets.UTF_8));
+        entity.setPassword(encoded);
+
+        String generatedClientId = clientIdGenerator.generate();
         entity.setClientId(generatedClientId);
 
         Client saved = repository.save(entity);
