@@ -58,3 +58,23 @@ CREATE SEQUENCE account_number_seq START WITH 1000000000 INCREMENT BY 1;
 GRANT USAGE, SELECT
 ON SEQUENCE account_number_seq
 TO banking_user;
+
+-- Movements
+CREATE TABLE movements (
+    id BIGSERIAL PRIMARY KEY,
+    movement_date TIMESTAMP NOT NULL,
+    movement_type VARCHAR(20) NOT NULL,
+    value NUMERIC(12,2) NOT NULL,
+    balance NUMERIC(12,2) NOT NULL,
+    account_id BIGINT NOT NULL,
+
+    CONSTRAINT fk_movements_account FOREIGN KEY (account_id) REFERENCES accounts(id)
+);
+
+GRANT SELECT, INSERT, UPDATE, DELETE
+ON TABLE movements
+TO banking_user;
+
+GRANT USAGE, SELECT
+ON SEQUENCE movements_id_seq
+TO banking_user;
