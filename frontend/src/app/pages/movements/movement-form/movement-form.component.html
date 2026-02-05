@@ -1,0 +1,50 @@
+<section class="page">
+  <div class="page-header">
+    <h1>Registrar movimiento</h1>
+  </div>
+
+  <div class="info-row" *ngIf="errorMessage">
+    <div class="alert alert-error">{{ errorMessage }}</div>
+  </div>
+
+  <div class="table-wrap" style="padding: 18px;">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-grid">
+        <label class="field">
+          <span>Cuenta (ID)</span>
+          <input type="number" formControlName="accountId" />
+          <small class="err" *ngIf="form.controls.accountId.touched && form.controls.accountId.invalid">
+            Cuenta es requerida
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Tipo</span>
+          <select formControlName="movementType">
+            <option value="" disabled>Seleccione</option>
+            <option value="DEPOSIT">Depósito</option>
+            <option value="WITHDRAWAL">Retiro</option>
+          </select>
+          <small class="err" *ngIf="form.controls.movementType.touched && form.controls.movementType.invalid">
+            Tipo es requerido
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Valor</span>
+          <input type="number" formControlName="value" />
+          <small class="err" *ngIf="form.controls.value.touched && form.controls.value.invalid">
+            Valor debe ser mayor a 0
+          </small>
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn" type="button" (click)="cancel()">Cancelar</button>
+        <button class="btn btn-primary" type="submit" [disabled]="isLoading">
+          Guardar
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

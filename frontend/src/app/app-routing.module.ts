@@ -9,6 +9,7 @@ import { ReportsComponent } from './pages/reports/reports.component';
 import { ClientFormComponent } from './pages/clients/client-form/client-form.component';
 import { AccountFormComponent } from './pages/accounts/account-form/account-form.component';
 import { AccountViewComponent } from './pages/accounts/account-view/account-view.component';
+import { MovementFormComponent } from './pages/movements/movement-form/movement-form.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,7 @@ const routes: Routes = [
       { path: 'accounts/:id/edit', component: AccountFormComponent },
       { path: 'accounts/:id/view', component: AccountViewComponent },
       { path: 'movements', component: MovementsComponent },
+      { path: 'movements/new', component: MovementFormComponent },
       { path: 'reports', component: ReportsComponent },
     ],
   },
