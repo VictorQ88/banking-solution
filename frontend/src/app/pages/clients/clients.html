@@ -1,1 +1,154 @@
-<p>clients works!</p>
+<section class="page">
+  <div class="header">
+    <div class="title">Clientes</div>
+
+    <div class="actions">
+      <input class="search" type="text" placeholder="Buscar" [(ngModel)]="searchText" (input)="applyFilter()" />
+
+      <button class="btn btn-primary" type="button" (click)="openCreate()">
+        Nuevo
+      </button>
+    </div>
+  </div>
+
+  @if (errorMessage) {
+  <div class="info-row">
+    <div class="alert">{{ errorMessage }}</div>
+  </div>
+  }
+
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Identificación</th>
+          <th>Teléfono</th>
+          <th>Código Cliente</th>
+          <th>Estado</th>
+          <th class="th-actions">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        @if (isLoading) {
+        <tr>
+          <td colspan="6" class="muted">Loading...</td>
+        </tr>
+        } @else if (filteredClients.length === 0) {
+        <tr>
+          <td colspan="6" class="muted">Sin resultados</td>
+        </tr>
+        } @else {
+        @for (client of filteredClients; track client.id) {
+        <tr>
+          <td>{{ client.name }}</td>
+          <td>{{ client.identification }}</td>
+          <td>{{ client.phone }}</td>
+          <td>{{ client.clientId }}</td>
+          <td>
+            <span class="pill" [class.pill-on]="client.active" [class.pill-off]="!client.active">
+              {{ client.active ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="td-actions">
+            <button class="btn btn-ghost" type="button" (click)="openEdit(client)">
+              Editar
+            </button>
+            <button class="btn btn-danger" type="button" (click)="confirmDelete(client)">
+              Eliminar
+            </button>
+          </td>
+        </tr>
+        }
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Modal -->
+  @if (isModalOpen) {
+  <div class="overlay" (click)="closeModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="modal-title">
+          {{ mode === 'create' ? 'Nuevo cliente' : 'Editar cliente' }}
+        </div>
+        <button class="btn btn-ghost" type="button" (click)="closeModal()">✕</button>
+      </div>
+
+      <form class="form" (ngSubmit)="submit()">
+        <div class="grid">
+          <label class="field">
+            <span>Nombre</span>
+            <input type="text" formControlName="name" />
+            @if (form.controls.name.touched && form.controls.name.invalid) {
+            <small class="err">Nombre es requerido (max 120)</small>
+            }
+          </label>
+
+          <label class="field">
+            <span>Genero</span>
+            <input type="text" formControlName="gender" placeholder="M / F" />
+            @if (form.controls.gender.touched && form.controls.gender.invalid) {
+            <small class="err">Genero es requerido (max 20)</small>
+            }
+          </label>
+
+          <label class="field">
+            <span>Edad</span>
+            <input type="number" formControlName="age" />
+            @if (form.controls.age.touched && form.controls.age.invalid) {
+            <small class="err">Edad debe estar entre 18 y 130</small>
+            }
+          </label>
+
+          <label class="field">
+            <span>Identificación</span>
+            <input type="text" formControlName="identification" />
+            @if (form.controls.identification.touched && form.controls.identification.invalid) {
+            <small class="err">Identificación es requerida (max 20)</small>
+            }
+          </label>
+
+          <label class="field">
+            <span>Dirección</span>
+            <input type="text" formControlName="address" />
+            @if (form.controls.address.touched && form.controls.address.invalid) {
+            <small class="err">Dirección es requerida (max 200)</small>
+            }
+          </label>
+
+          <label class="field">
+            <span>Teléfono</span>
+            <input type="text" formControlName="phone" />
+            @if (form.controls.phone.touched && form.controls.phone.invalid) {
+            <small class="err">Teléfono es requerido (max 20)</small>
+            }
+          </label>
+
+          <label class="field">
+            <span>Clave</span>
+            <input type="password" formControlName="password" />
+            @if (form.controls.password.touched && form.controls.password.invalid) {
+            <small class="err">Clave es requerida (min 4, max 120)</small>
+            }
+          </label>
+
+          <label class="field field-inline">
+            <span>Activo</span>
+            <input type="checkbox" formControlName="active" />
+          </label>
+        </div>
+
+        <div class="modal-actions">
+          <button class="btn" type="button" (click)="closeModal()">Cancelar</button>
+          <button class="btn btn-primary" type="submit" [disabled]="isLoading">
+            {{ mode === 'create' ? 'Crear' : 'Actualizar' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  }
+</section>
