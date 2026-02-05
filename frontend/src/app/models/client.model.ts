@@ -8,11 +8,5 @@ export interface Client {
   phone: string;
   clientId: string;
   active: boolean;
-  password: string;
+  password?: string;
 }
-
-// export type ClientCreateRequest = Omit<Client, 'id' | 'clientId'> & {
-//   password: string;
-// };
-
-// export type ClientUpdateRequest = Partial<Omit<Client, 'id' | 'clientId'>>;

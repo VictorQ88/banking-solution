@@ -1,0 +1,90 @@
+<section class="page">
+  <div class="header">
+    <div class="title">{{ mode === 'create' ? 'Nuevo cliente' : 'Editar cliente' }}</div>
+
+    <div class="actions">
+      <button class="btn" type="button" (click)="cancel()">Volver</button>
+      <button class="btn btn-primary" type="button" (click)="submit()" [disabled]="isLoading">
+        {{ mode === 'create' ? 'Crear' : 'Actualizar' }}
+      </button>
+    </div>
+  </div>
+
+  <div class="info-row" *ngIf="errorMessage">
+    <div class="alert">{{ errorMessage }}</div>
+  </div>
+
+  <div class="table-wrap" style="padding: 18px;">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-grid">
+        <label class="field">
+          <span>Nombre</span>
+          <input type="text" formControlName="name" />
+          <small class="err" *ngIf="form.controls.name.touched && form.controls.name.invalid">
+            Nombre es requerido (max 120)
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Genero</span>
+          <input type="text" formControlName="gender" placeholder="M / F" />
+          <small class="err" *ngIf="form.controls.gender.touched && form.controls.gender.invalid">
+            Genero es requerido (max 20)
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Edad</span>
+          <input type="number" formControlName="age" />
+          <small class="err" *ngIf="form.controls.age.touched && form.controls.age.invalid">
+            Edad debe estar entre 18 y 130
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Identificación</span>
+          <input type="text" formControlName="identification" />
+          <small class="err" *ngIf="form.controls.identification.touched && form.controls.identification.invalid">
+            Identificación es requerida (max 20)
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Dirección</span>
+          <input type="text" formControlName="address" />
+          <small class="err" *ngIf="form.controls.address.touched && form.controls.address.invalid">
+            Dirección es requerida (max 200)
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Teléfono</span>
+          <input type="text" formControlName="phone" />
+          <small class="err" *ngIf="form.controls.phone.touched && form.controls.phone.invalid">
+            Teléfono es requerido (max 20)
+          </small>
+        </label>
+
+        <label class="field" *ngIf="mode === 'create'">
+          <span>Clave</span>
+          <input type="password" formControlName="password" />
+          <small class="err" *ngIf="form.controls.password.touched && form.controls.password.invalid">
+            Clave es requerida (min 4, max 120)
+          </small>
+        </label>
+
+        <label class="field field-inline">
+          <span>Activo</span>
+          <input type="checkbox" formControlName="active" />
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn" type="button" (click)="cancel()">Cancelar</button>
+        <button class="btn btn-primary" type="submit" [disabled]="isLoading">
+          {{ mode === 'create' ? 'Crear' : 'Actualizar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

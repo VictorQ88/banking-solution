@@ -165,3 +165,25 @@ body {
   background: #f2e5e5;
   color: #7a2b2b;
 }
+
+.info-row {
+  margin-bottom: 12px;
+}
+
+.alert {
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.alert-success {
+  background: #e8fff0;
+  color: #1e7f3c;
+  border: 1px solid #b9f6ca;
+}
+
+.alert-error {
+  background: #ffecec;
+  color: #c0392b;
+  border: 1px solid #ffb3b3;
+}

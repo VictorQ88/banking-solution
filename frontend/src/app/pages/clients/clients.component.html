@@ -11,9 +11,11 @@
     </div>
   </div>
 
-  <div class="alert" *ngIf="errorMessage">
-    {{ errorMessage }}
+<div class="info-row" *ngIf="messageText">
+  <div class="alert" [class.alert-success]="messageType === 'success'" [class.alert-error]="messageType === 'error'">
+    {{ messageText }}
   </div>
+</div>
 
   <div class="clients-table">
     <table>

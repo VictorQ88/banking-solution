@@ -9,20 +9,30 @@ import { AccountsComponent } from './pages/accounts/accounts.component';
 import { MovementsComponent } from './pages/movements/movements.component';
 import { ReportsComponent } from './pages/reports/reports.component';
 import { ClientsComponent } from './pages/clients/clients.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { ClientFormComponent } from './pages/clients/client-form/client-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ShellComponent,
     HomeComponent,
-    // ClientsComponent,
+    ClientsComponent,
+    ClientFormComponent,
     AccountsComponent,
     MovementsComponent,
     ReportsComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

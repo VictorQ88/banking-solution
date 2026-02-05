@@ -6,6 +6,7 @@ import { ClientsComponent } from './pages/clients/clients.component';
 import { AccountsComponent } from './pages/accounts/accounts.component';
 import { MovementsComponent } from './pages/movements/movements.component';
 import { ReportsComponent } from './pages/reports/reports.component';
+import { ClientFormComponent } from './pages/clients/client-form/client-form.component';
 
 const routes: Routes = [
   {
@@ -13,13 +14,9 @@ const routes: Routes = [
     component: ShellComponent,
     children: [
       { path: '', component: HomeComponent },
-      {
-        path: 'clients',
-        loadComponent: () =>
-          import('./pages/clients/clients.component').then(
-            (m) => m.ClientsComponent,
-          ),
-      },
+      { path: 'clients', component: ClientsComponent },
+      { path: 'clients/new', component: ClientFormComponent },
+      { path: 'clients/:id/edit', component: ClientFormComponent },
       { path: 'accounts', component: AccountsComponent },
       { path: 'movements', component: MovementsComponent },
       { path: 'reports', component: ReportsComponent },

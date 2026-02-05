@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
 import { Client } from '../../models/client.model';
@@ -9,8 +9,7 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-clients',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
+  standalone: false,
   templateUrl: './clients.component.html',
   styleUrls: ['./clients.component.css'],
 })
@@ -21,14 +20,36 @@ export class ClientsComponent implements OnInit {
 
   isLoading = false;
   errorMessage = '';
+  messageText = '';
+  messageType: 'success' | 'error' = 'success';
 
   constructor(
     private readonly clientService: ClientService,
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
+    this.handleMessage();
     this.loadClients();
+  }
+
+  handleMessage(): void {
+    const msg = this.route.snapshot.queryParamMap.get('msg');
+
+    if (msg === 'created') {
+      this.messageType = 'success';
+      this.messageText = 'Cliente creado correctamente';
+    } else if (msg === 'updated') {
+      this.messageType = 'success';
+      this.messageText = 'Cliente actualizado correctamente';
+    }
+    
+    console.log("🚀 ~ ClientsComponent ~ handleMessage ~ this.messageType :", this.messageType )
+    if (msg) {
+      setTimeout(() => (this.messageText = ''), 3000);
+      this.router.navigate([], { queryParams: {} });
+    }
   }
 
   loadClients(): void {
@@ -72,12 +93,11 @@ export class ClientsComponent implements OnInit {
   }
 
   goCreate(): void {
-    // por ahora solo navega (creamos pantalla luego)
     this.router.navigate(['/clients/new']);
   }
 
   goEdit(client: Client): void {
-    this.router.navigate(['/clients', client.id, 'edit']);
+    this.router.navigateByUrl(`/clients/${client.id}/edit`);
   }
 
   deleteClient(client: Client): void {

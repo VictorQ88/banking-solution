@@ -49,7 +49,8 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   padding: 14px 16px;
   border-bottom: 1px solid #e5e5e5;
   text-align: left;
@@ -88,9 +89,4 @@ th {
   padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
-}
-
-.alert {
-  margin-bottom: 12px;
-  color: #c0392b;
 }
