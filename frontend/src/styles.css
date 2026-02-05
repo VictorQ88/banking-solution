@@ -1,1 +1,167 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --bg: #f3f3f3;
+  --card: #fff;
+  --text: #222;
+  --muted: #777;
+  --border: #e5e5e5;
+
+  --primary: #f5d739;
+  --danger: #b8463a;
+  --link: #1b57ff;
+
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+.page {
+  max-width: 1200px;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 18px;
+}
+
+.title {
+  font-size: 44px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.search {
+  width: 440px;
+  max-width: 55vw;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  outline: none;
+  background: #fff;
+  font-size: 16px;
+}
+
+.search:focus {
+  border-color: #cfcfcf;
+}
+
+.btn {
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: #fff;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--primary);
+  border-color: #e6c92e;
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #fff;
+  border-color: #a13f35;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--link);
+  border-color: transparent;
+  padding: 0 10px;
+}
+
+.info-row {
+  margin: 10px 0 14px;
+}
+
+.alert {
+  padding: 10px 12px;
+  border: 1px solid #f0c7c7;
+  background: #fff1f1;
+  border-radius: 6px;
+  color: #8b1f1f;
+}
+
+.table-wrap {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table thead th {
+  font-size: 18px;
+  font-weight: 800;
+  padding: 18px 18px;
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+  white-space: nowrap;
+}
+
+.table tbody td {
+  padding: 18px 18px;
+  border-bottom: 1px solid #f0f0f0;
+  vertical-align: middle;
+}
+
+.th-actions,
+.td-actions {
+  text-align: right;
+  white-space: nowrap;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.pill {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.pill-on {
+  background: #e5f2e6;
+  color: #2c6b31;
+}
+
+.pill-off {
+  background: #f2e5e5;
+  color: #7a2b2b;
+}

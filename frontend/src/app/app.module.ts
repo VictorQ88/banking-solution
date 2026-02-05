@@ -5,26 +5,25 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ShellComponent } from './layout/shell/shell.component';
 import { HomeComponent } from './pages/home/home.component';
-import { ClientsComponent } from './pages/clients/clients.component';
 import { AccountsComponent } from './pages/accounts/accounts.component';
 import { MovementsComponent } from './pages/movements/movements.component';
 import { ReportsComponent } from './pages/reports/reports.component';
+import { ClientsComponent } from './pages/clients/clients.component';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     ShellComponent,
     HomeComponent,
-    ClientsComponent,
+    // ClientsComponent,
     AccountsComponent,
     MovementsComponent,
-    ReportsComponent
+    ReportsComponent,
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule
-  ],
+  imports: [BrowserModule, AppRoutingModule, HttpClientModule],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

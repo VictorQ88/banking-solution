@@ -13,7 +13,13 @@ const routes: Routes = [
     component: ShellComponent,
     children: [
       { path: '', component: HomeComponent },
-      { path: 'clients', component: ClientsComponent },
+      {
+        path: 'clients',
+        loadComponent: () =>
+          import('./pages/clients/clients.component').then(
+            (m) => m.ClientsComponent,
+          ),
+      },
       { path: 'accounts', component: AccountsComponent },
       { path: 'movements', component: MovementsComponent },
       { path: 'reports', component: ReportsComponent },
