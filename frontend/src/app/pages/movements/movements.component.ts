@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { Movement } from '../../models/movement.model';
 import { MovementService } from '../../services/movement.service';
@@ -26,6 +26,7 @@ export class MovementsComponent implements OnInit {
   constructor(
     private readonly service: MovementService,
     private readonly route: ActivatedRoute,
+    private readonly router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -100,6 +101,10 @@ export class MovementsComponent implements OnInit {
             this.getApiMessage(err) || 'Error eliminando movimiento';
         },
       });
+  }
+
+  goCreate(): void {
+    this.router.navigate(['/movements/new']);
   }
 
   trackById(_: number, item: Movement) {

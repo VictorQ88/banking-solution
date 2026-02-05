@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import { ClientFormComponent } from './pages/clients/client-form/client-form.component';
 import { AccountFormComponent } from './pages/accounts/account-form/account-form.component';
 import { AccountViewComponent } from './pages/accounts/account-view/account-view.component';
+import { MovementFormComponent } from './pages/movements/movement-form/movement-form.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { AccountViewComponent } from './pages/accounts/account-view/account-view
     AccountFormComponent,
     AccountViewComponent,
     MovementsComponent,
+    MovementFormComponent,
     ReportsComponent,
   ],
   imports: [
