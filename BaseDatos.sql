@@ -23,7 +23,13 @@ GRANT USAGE, SELECT
 ON SEQUENCE clients_id_seq
 TO banking_user;
 
--- Account
+--sequence for client_id
+CREATE SEQUENCE clientid_seq START WITH 1 INCREMENT BY 1;
+
+GRANT USAGE, SELECT
+ON SEQUENCE clientid_seq
+TO banking_user;
+
 
 -- Account
 CREATE TABLE accounts (
@@ -44,4 +50,11 @@ TO banking_user;
 
 GRANT USAGE, SELECT
 ON SEQUENCE accounts_id_seq
+TO banking_user;
+
+-- sequence for numbering accounts
+CREATE SEQUENCE account_number_seq START WITH 1000000000 INCREMENT BY 1;
+
+GRANT USAGE, SELECT
+ON SEQUENCE account_number_seq
 TO banking_user;

@@ -1,7 +1,6 @@
 package com.banking.solution.service;
 
 import java.util.List;
-import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import com.banking.solution.domain.Client;
 import com.banking.solution.dto.ClientDTO;
+import com.banking.solution.exception.NotFoundException;
 import com.banking.solution.repository.ClientRepository;
+import com.banking.solution.utils.ClientIdGenerator;
 import com.banking.solution.utils.ClientMapper;
 
 @Service
@@ -18,9 +19,11 @@ public class ClientServiceImpl implements ClientService {
     private static final Logger log = LoggerFactory.getLogger(ClientServiceImpl.class);
 
     private final ClientRepository repository;
+    private final ClientIdGenerator clientIdGenerator;
 
-    public ClientServiceImpl(ClientRepository repository) {
+    public ClientServiceImpl(ClientRepository repository, ClientIdGenerator clientIdGenerator) {
         this.repository = repository;
+        this.clientIdGenerator = clientIdGenerator;
     }
 
     @Override
@@ -36,7 +39,7 @@ public class ClientServiceImpl implements ClientService {
 
         Client entity = ClientMapper.toEntity(dto);
 
-        String generatedClientId = "CLI-" + UUID.randomUUID();
+        String generatedClientId = clientIdGenerator.generate(); // changed
         entity.setClientId(generatedClientId);
 
         Client saved = repository.save(entity);
@@ -57,7 +60,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ClientDTO findById(Long id) {
         Client entity = repository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Client not found"));
+                .orElseThrow(() -> new NotFoundException("Client not found"));
         return ClientMapper.toDto(entity);
     }
 
@@ -69,7 +72,7 @@ public class ClientServiceImpl implements ClientService {
         Client entity = repository.findById(id)
                 .orElseThrow(() -> {
                     log.warn("Client not found id={}", id);
-                    return new IllegalArgumentException("Client not found");
+                    return new NotFoundException("Client not found");
                 });
 
         ClientMapper.updateEntity(entity, dto);
