@@ -1,7 +1,8 @@
 package com.banking.solution.controller;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,7 +12,7 @@ import com.banking.solution.dto.AccountStatementReportDTO;
 import com.banking.solution.service.ReportService;
 
 @RestController
-@RequestMapping("/reportes")
+@RequestMapping("/reports")
 public class ReportController {
 
     private final ReportService service;
@@ -23,8 +24,10 @@ public class ReportController {
     @GetMapping
     public AccountStatementReportDTO accountStatement(
             @RequestParam Long clientId,
-            @RequestParam LocalDateTime from,
-            @RequestParam LocalDateTime to
+            @RequestParam("from")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
+            @RequestParam("to")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to
     ) {
         return service.accountStatement(clientId, from, to);
     }

@@ -1,15 +1,21 @@
 <section class="page">
   <div class="page-header">
     <h1>Reporte – Estado de cuenta</h1>
+
+    <div class="page-actions">
+      <button class="btn btn-primary" type="button" (click)="downloadPdf()" [disabled]="!report">
+        Imprimir / Guardar PDF
+      </button>
+    </div>
   </div>
 
   <div class="table-wrap" style="padding: 18px;">
-    <div class="form-grid">
+    <div class="report-filters">
       <label class="field">
         <span>Cliente</span>
         <select [(ngModel)]="clientId">
           <option value="" disabled>Seleccione</option>
-          <option *ngFor="let c of clients" [value]="c.id">
+          <option *ngFor="let c of clients" [ngValue]="c.id">
             {{ c.name }} ({{ c.identification }})
           </option>
         </select>
@@ -17,19 +23,19 @@
 
       <label class="field">
         <span>Desde</span>
-        <input type="datetime-local" [(ngModel)]="from" />
+        <input type="date" [(ngModel)]="from" />
       </label>
 
       <label class="field">
         <span>Hasta</span>
-        <input type="datetime-local" [(ngModel)]="to" />
+        <input type="date" [(ngModel)]="to" />
       </label>
-    </div>
 
-    <div class="form-actions">
-      <button class="btn btn-primary" (click)="generate()" [disabled]="isLoading">
-        Buscar
-      </button>
+      <div class="report-actions">
+        <button class="btn btn-primary" (click)="generate()" [disabled]="isLoading">
+          Generar
+        </button>
+      </div>
     </div>
   </div>
 
@@ -38,61 +44,75 @@
   </div>
 
   <div *ngIf="report">
-    <h2>{{ report.clientName }} – {{ report.identification }}</h2>
-
-    <div *ngFor="let acc of report.accounts" class="table-wrap" style="margin-top:16px">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Cuenta</th>
-            <th>Tipo</th>
-            <th>Saldo Inicial</th>
-            <th>Créditos</th>
-            <th>Débitos</th>
-            <th>Saldo Final</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{{ acc.accountNumber }}</td>
-            <td>{{ acc.accountType }}</td>
-            <td>{{ acc.initialBalance }}</td>
-            <td>{{ acc.totalCredits }}</td>
-            <td>{{ acc.totalDebits }}</td>
-            <td>{{ acc.finalBalance }}</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <table class="table" style="margin-top:10px">
-        <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Tipo</th>
-            <th>Valor</th>
-            <th>Saldo</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let m of acc.movements">
-            <td>{{ m.movementDate | date:'yyyy-MM-dd HH:mm' }}</td>
-            <td>
-              <span class="pill" [class.pill-on]="m.movementType === 'DEPOSIT'"
-                                [class.pill-off]="m.movementType !== 'DEPOSIT'">
-                {{ m.movementType }}
-              </span>
-            </td>
-            <td>{{ m.value }}</td>
-            <td>{{ m.balance }}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="card" style="margin-top:18px">
+      <strong>{{ report.clientName }}</strong>
+      <div class="muted">
+        {{ report.identification }} |
+        {{ report.fromDate | date:'yyyy-MM-dd' }} →
+        {{ report.toDate | date:'yyyy-MM-dd' }}
+      </div>
     </div>
 
-    <div class="form-actions" style="margin-top:20px">
-      <button class="btn btn-primary" (click)="downloadPdf()">
-        Descargar PDF
-      </button>
+    <div *ngFor="let acc of report.accounts" class="card" style="margin-top:20px">
+      <div class="grid grid-2">
+        <div>
+          <strong>Cuenta</strong>
+          <div>{{ acc.accountNumber }}</div>
+        </div>
+
+        <div>
+          <strong>Tipo</strong>
+          <div>{{ acc.accountType }}</div>
+        </div>
+
+        <div>
+          <strong>Saldo inicial</strong>
+          <div>{{ acc.initialBalance }}</div>
+        </div>
+
+        <div>
+          <strong>Saldo final</strong>
+          <div>{{ acc.finalBalance }}</div>
+        </div>
+
+        <div>
+          <strong>Créditos</strong>
+          <div class="pill pill-on">{{ acc.totalCredits }}</div>
+        </div>
+
+        <div>
+          <strong>Débitos</strong>
+          <div class="pill pill-off">{{ acc.totalDebits }}</div>
+        </div>
+      </div>
+
+      <h3 style="margin:18px 0 10px">Movimientos</h3>
+
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Tipo</th>
+              <th>Valor</th>
+              <th>Saldo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of acc.movements">
+              <td>{{ m.movementDate | date:'yyyy-MM-dd HH:mm' }}</td>
+              <td>
+                <span class="pill" [class.pill-on]="m.movementType === 'DEPOSIT'"
+                  [class.pill-off]="m.movementType === 'WITHDRAWAL'">
+                  {{ m.movementType }}
+                </span>
+              </td>
+              <td>{{ m.value }}</td>
+              <td>{{ m.balance }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </section>

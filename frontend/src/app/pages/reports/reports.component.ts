@@ -45,13 +45,6 @@ export class ReportsComponent implements OnInit {
   }
 
   downloadPdf(): void {
-    this.reportService
-      .downloadPdf(this.clientId, this.from, this.to)
-      .subscribe((r) => {
-        const link = document.createElement('a');
-        link.href = `data:application/pdf;base64,${r.base64}`;
-        link.download = 'estado-cuenta.pdf';
-        link.click();
-      });
+    window.print();
   }
 }

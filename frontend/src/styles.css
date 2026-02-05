@@ -248,3 +248,16 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+@media print {
+  .sidebar, nav, .page-actions, button { display: none !important; }
+  body { background: #fff !important; }
+  .page { max-width: 100% !important; }
+  .table-wrap, .card { border: none !important; }
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 24px;
+}

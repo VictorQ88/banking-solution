@@ -1,6 +1,7 @@
 package com.banking.solution.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -39,14 +40,15 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public AccountStatementReportDTO accountStatement(
             Long clientId,
-            LocalDateTime from,
-            LocalDateTime to
+            LocalDate from,
+            LocalDate to
     ) {
 
         Client client = clientRepository.findById(clientId)
                 .orElseThrow(() -> new NotFoundException("Client not found"));
-
-        List<Movement> movements = movementRepository.report(clientId, from, to);
+LocalDateTime fromDateTime = from.atStartOfDay();
+LocalDateTime toDateTime = to.atTime(23, 59, 59);
+        List<Movement> movements = movementRepository.report(clientId, fromDateTime, toDateTime);
 
         Map<Long, List<Movement>> movementsByAccount
                 = movements.stream().collect(Collectors.groupingBy(m -> m.getAccount().getId()));
@@ -91,6 +93,8 @@ public class ReportServiceImpl implements ReportService {
                 client.getId(),
                 client.getName(),
                 client.getIdentification(),
+                from,
+                to,
                 accounts
         );
     }
