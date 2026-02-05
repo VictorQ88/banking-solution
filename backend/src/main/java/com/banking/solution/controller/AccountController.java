@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.banking.solution.dto.AccountDTO;
+import com.banking.solution.dto.AccountUpdateDTO;
 import com.banking.solution.service.AccountService;
 
 import jakarta.validation.Valid;
@@ -45,7 +46,7 @@ public class AccountController {
     }
 
     @PutMapping("/{id}")
-    public AccountDTO update(@PathVariable Long id, @Valid @RequestBody AccountDTO dto) {
+    public AccountDTO update(@PathVariable Long id, @Valid @RequestBody AccountUpdateDTO dto) {
         return service.update(id, dto);
     }
 

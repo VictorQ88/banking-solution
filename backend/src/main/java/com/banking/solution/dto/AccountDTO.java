@@ -14,8 +14,6 @@ public class AccountDTO {
 
     private Long id;
 
-    @NotBlank
-    @Size(max = 20)
     private String accountNumber;
 
     @NotBlank

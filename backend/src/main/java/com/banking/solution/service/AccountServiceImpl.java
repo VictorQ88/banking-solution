@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.banking.solution.domain.Account;
 import com.banking.solution.domain.Client;
 import com.banking.solution.dto.AccountDTO;
+import com.banking.solution.dto.AccountUpdateDTO;
 import com.banking.solution.exception.NotFoundException;
 import com.banking.solution.repository.AccountRepository;
 import com.banking.solution.repository.ClientRepository;
@@ -73,7 +74,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public AccountDTO update(Long id, AccountDTO dto) {
+    public AccountDTO update(Long id, AccountUpdateDTO dto) {
 
         log.info("Updating account id={}", id);
 
@@ -83,14 +84,7 @@ public class AccountServiceImpl implements AccountService {
                     return new NotFoundException("Account not found");
                 });
 
-        Client client = clientRepository.findById(dto.getClientId())
-                .orElseThrow(() -> new NotFoundException("Client not found"));
-
-        existing.setAccountNumber(dto.getAccountNumber());
-        existing.setAccountType(dto.getAccountType());
-        existing.setInitialBalance(dto.getInitialBalance());
         existing.setActive(dto.getActive());
-        existing.setClient(client);
 
         Account saved = accountRepository.save(existing);
 
