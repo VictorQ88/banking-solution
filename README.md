@@ -14,3 +14,10 @@ En la raíz del repositorio (donde está `docker-compose.yml`):
 
 ```bash
 docker compose up --build
+
+
+Servicios expuestos:
+
+- Frontend: http://localhost:4200
+- Backend API: http://localhost:8080/api
+- PostgreSQL: puerto 5432
