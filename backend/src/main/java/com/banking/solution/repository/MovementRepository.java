@@ -1,5 +1,6 @@
 package com.banking.solution.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,7 +11,10 @@ import com.banking.solution.domain.Account;
 import com.banking.solution.domain.Movement;
 
 public interface MovementRepository extends JpaRepository<Movement, Long> {
-    
+
     @Query("SELECT m FROM Movement m WHERE m.account = :account ORDER BY m.movementDate DESC LIMIT 1")
     Optional<Movement> findLastMovementByAccount(@Param("account") Account account);
+
+    @Query("SELECT m FROM Movement m WHERE m.account.id = :accountId ORDER BY m.movementDate DESC")
+    List<Movement> findByAccountId(@Param("accountId") Long accountId);
 }

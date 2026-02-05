@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.banking.solution.domain.Account;
 import com.banking.solution.domain.Movement;
 import com.banking.solution.dto.MovementDTO;
+import com.banking.solution.exception.BusinessException;
 import com.banking.solution.exception.NotFoundException;
 import com.banking.solution.repository.AccountRepository;
 import com.banking.solution.repository.MovementRepository;
@@ -62,14 +63,14 @@ public class MovementServiceImpl implements MovementService {
         if (newBalance.compareTo(BigDecimal.ZERO) < 0) {
             log.warn("Insufficient balance accountId={}, currentBalance={}, withdrawal={}",
                     account.getId(), currentBalance, value);
-            throw new IllegalStateException("Insufficient balance");
+            throw new BusinessException("Insufficient balance");
         }
 
         Movement movement = new Movement();
         movement.setId(null);
         movement.setMovementDate(LocalDateTime.now());
         movement.setMovementType(type);
-        movement.setValue(actualValue);  
+        movement.setValue(actualValue);
         movement.setBalance(newBalance);
         movement.setAccount(account);
 
@@ -99,10 +100,10 @@ public class MovementServiceImpl implements MovementService {
     @Override
     public List<MovementDTO> findByAccountId(Long accountId) {
         log.info("Fetching movements for accountId={}", accountId);
-        
+
         accountRepository.findById(accountId)
                 .orElseThrow(() -> new NotFoundException("Account not found"));
-        
+
         return movementRepository.findByAccountId(accountId)
                 .stream()
                 .map(MovementMapper::toDTO)
