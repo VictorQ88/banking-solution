@@ -4,7 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
 import { Account } from '../../../models/account.model';
+import { Client } from '../../../models/client.model';
 import { AccountService } from '../../../services/account.service';
+import { ClientService } from '../../../services/client.service';
 
 type Mode = 'create' | 'edit';
 
@@ -20,6 +22,8 @@ export class AccountFormComponent implements OnInit {
 
   isLoading = false;
   errorMessage = '';
+
+  clients: Client[] = [];
   form: any;
 
   constructor(
@@ -27,6 +31,7 @@ export class AccountFormComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly router: Router,
     private readonly accountService: AccountService,
+    private readonly clientService: ClientService,
   ) {}
 
   ngOnInit(): void {
@@ -34,17 +39,22 @@ export class AccountFormComponent implements OnInit {
       accountType: ['', [Validators.required, Validators.maxLength(20)]],
       initialBalance: [0, [Validators.required]],
       active: [true, [Validators.required]],
-      clientId: [0, [Validators.required]],
+      clientId: [null as any, [Validators.required]],
     });
 
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       this.mode = 'edit';
       this.id = Number(idParam);
-      this.loadAccount(this.id);
     } else {
       this.mode = 'create';
       this.id = null;
+    }
+
+    this.loadClients();
+
+    if (this.mode === 'edit' && this.id != null) {
+      this.loadAccount(this.id);
     }
   }
 
@@ -59,6 +69,13 @@ export class AccountFormComponent implements OnInit {
 
     if (this.mode === 'create') this.createAccount();
     else this.updateAccount();
+  }
+
+  private loadClients(): void {
+    this.clientService.findAll().subscribe({
+      next: (data) => (this.clients = Array.isArray(data) ? data : []),
+      error: () => (this.clients = []),
+    });
   }
 
   private loadAccount(id: number): void {
@@ -82,6 +99,10 @@ export class AccountFormComponent implements OnInit {
       active: a.active,
       clientId: a.clientId,
     });
+
+    this.form.controls.accountType.disable();
+    this.form.controls.initialBalance.disable();
+    this.form.controls.clientId.disable();
   }
 
   private createAccount(): void {
@@ -110,9 +131,10 @@ export class AccountFormComponent implements OnInit {
     this.isLoading = true;
 
     const payload = this.form.getRawValue();
+    const req = { active: payload.active };
 
     this.accountService
-      .update(this.id, payload)
+      .update(this.id, req)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () =>
@@ -137,5 +159,9 @@ export class AccountFormComponent implements OnInit {
     if (typeof body?.message === 'string') return body.message;
 
     return '';
+  }
+
+  trackByClientId(_: number, item: Client) {
+    return item.id;
   }
 }

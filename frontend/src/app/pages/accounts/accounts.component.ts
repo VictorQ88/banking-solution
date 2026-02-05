@@ -33,7 +33,11 @@ export class AccountsComponent implements OnInit {
       if (msg === 'updated') this.successMessage = 'Cuenta actualizada';
 
       if (msg) {
-        this.router.navigate([], { relativeTo: this.route, queryParams: {}, replaceUrl: true });
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {},
+          replaceUrl: true,
+        });
       }
     });
 
@@ -53,7 +57,8 @@ export class AccountsComponent implements OnInit {
           this.applyFilter();
         },
         error: (err) => {
-          this.errorMessage = this.getApiMessage(err) || 'Error cargando cuentas';
+          this.errorMessage =
+            this.getApiMessage(err) || 'Error cargando cuentas';
           this.accounts = [];
           this.filteredAccounts = [];
         },
@@ -73,7 +78,8 @@ export class AccountsComponent implements OnInit {
     }
 
     this.filteredAccounts = this.accounts.filter((a) => {
-      const hay = `${a.accountNumber} ${a.accountType} ${a.clientId} ${a.initialBalance}`.toLowerCase();
+      const hay =
+        `${a.accountNumber} ${a.accountType} ${a.clientId} ${a.initialBalance}`.toLowerCase();
       return hay.includes(q);
     });
   }
@@ -86,8 +92,17 @@ export class AccountsComponent implements OnInit {
     this.router.navigateByUrl(`/accounts/${account.id}/edit`);
   }
 
+  goView(a: Account): void {
+    this.router.navigate(['/accounts', a.id, 'view']);
+  }
+
   deleteAccount(account: Account): void {
-    if (!window.confirm(`Eliminar cuenta "${account.accountNumber}"?`)) return;
+    if (
+      !window.confirm(
+        `Eliminar cuenta "${account.accountNumber}"? \nEsto elimina la cuenta y sus movimientos permanentemente.`,
+      )
+    )
+      return;
 
     this.isLoading = true;
     this.errorMessage = '';
@@ -97,11 +112,13 @@ export class AccountsComponent implements OnInit {
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () => {
+          this.successMessage = 'Cuenta eliminada';
           this.accounts = this.accounts.filter((x) => x.id !== account.id);
           this.applyFilter();
         },
         error: (err) => {
-          this.errorMessage = this.getApiMessage(err) || 'Error eliminando cuenta';
+          this.errorMessage =
+            this.getApiMessage(err) || 'Error eliminando cuenta';
         },
       });
   }

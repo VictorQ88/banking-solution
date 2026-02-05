@@ -1,6 +1,6 @@
 <section class="page">
   <div class="page-header">
-    <h1> {{ mode === 'create' ? 'Nueva cuenta' : 'Editar cuenta' }}</h1>
+    <h1>{{ mode === 'create' ? 'Nueva cuenta' : 'Editar cuenta' }}</h1>
   </div>
 
   <div class="info-row" *ngIf="errorMessage">
@@ -11,8 +11,21 @@
     <form [formGroup]="form" (ngSubmit)="submit()">
       <div class="form-grid">
         <label class="field">
+          <span>Cliente</span>
+          <select formControlName="clientId" [disabled]="mode === 'edit'">
+            <option value="" disabled>Seleccione</option>
+            <option *ngFor="let c of clients; trackBy: trackByClientId" [ngValue]="c.id">
+              {{ c.name }} ({{ c.identification }})
+            </option>
+          </select>
+          <small class="err" *ngIf="form.controls.clientId.touched && form.controls.clientId.invalid">
+            Cliente es requerido
+          </small>
+        </label>
+
+        <label class="field">
           <span>Tipo</span>
-          <select formControlName="accountType">
+          <select formControlName="accountType" [disabled]="mode === 'edit'">
             <option value="" disabled>Seleccione</option>
             <option value="SAVINGS">Ahorros</option>
             <option value="CHECKING">Corriente</option>
@@ -24,17 +37,9 @@
 
         <label class="field">
           <span>Saldo Inicial</span>
-          <input type="number" formControlName="initialBalance" />
+          <input type="number" formControlName="initialBalance" [readonly]="mode === 'edit'" />
           <small class="err" *ngIf="form.controls.initialBalance.touched && form.controls.initialBalance.invalid">
             Saldo inicial es requerido
-          </small>
-        </label>
-
-        <label class="field">
-          <span>Cliente (ID)</span>
-          <input type="number" formControlName="clientId" />
-          <small class="err" *ngIf="form.controls.clientId.touched && form.controls.clientId.invalid">
-            Cliente es requerido
           </small>
         </label>
 

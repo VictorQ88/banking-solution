@@ -66,10 +66,14 @@ CREATE TABLE movements (
     movement_type VARCHAR(20) NOT NULL,
     value NUMERIC(12,2) NOT NULL,
     balance NUMERIC(12,2) NOT NULL,
-    account_id BIGINT NOT NULL,
-
-    CONSTRAINT fk_movements_account FOREIGN KEY (account_id) REFERENCES accounts(id)
+    account_id BIGINT NOT NULL
 );
+
+ALTER TABLE movements
+ADD CONSTRAINT fk_movements_account
+FOREIGN KEY (account_id)
+REFERENCES accounts(id)
+ON DELETE CASCADE;
 
 GRANT SELECT, INSERT, UPDATE, DELETE
 ON TABLE movements

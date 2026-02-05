@@ -52,6 +52,7 @@
           </td>
           <td>{{ a.clientId }}</td>
           <td class="td-actions">
+            <button class="btn btn-ghost" type="button" (click)="goView(a)">Ver</button>
             <button class="btn btn-ghost" type="button" (click)="goEdit(a)">Editar</button>
             <button class="btn btn-danger" type="button" (click)="deleteAccount(a)">Eliminar</button>
           </td>

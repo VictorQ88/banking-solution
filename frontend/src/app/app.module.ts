@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ClientFormComponent } from './pages/clients/client-form/client-form.component';
 import { AccountFormComponent } from './pages/accounts/account-form/account-form.component';
+import { AccountViewComponent } from './pages/accounts/account-view/account-view.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { AccountFormComponent } from './pages/accounts/account-form/account-form
     ClientFormComponent,
     AccountsComponent,
     AccountFormComponent,
+    AccountViewComponent,
     MovementsComponent,
     ReportsComponent,
   ],
