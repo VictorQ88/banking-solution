@@ -1,13 +1,6 @@
 <section class="page">
-  <div class="header">
-    <div class="title">{{ mode === 'create' ? 'Nuevo cliente' : 'Editar cliente' }}</div>
-
-    <div class="actions">
-      <button class="btn" type="button" (click)="cancel()">Volver</button>
-      <button class="btn btn-primary" type="button" (click)="submit()" [disabled]="isLoading">
-        {{ mode === 'create' ? 'Crear' : 'Actualizar' }}
-      </button>
-    </div>
+  <div class="page-header">
+    <h1>{{ mode === 'create' ? 'Nuevo cliente' : 'Editar cliente' }}</h1>
   </div>
 
   <div class="info-row" *ngIf="errorMessage">

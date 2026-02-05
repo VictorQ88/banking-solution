@@ -1,0 +1,55 @@
+<section class="page">
+  <div class="page-header">
+    <h1> {{ mode === 'create' ? 'Nueva cuenta' : 'Editar cuenta' }}</h1>
+  </div>
+
+  <div class="info-row" *ngIf="errorMessage">
+    <div class="alert alert-error">{{ errorMessage }}</div>
+  </div>
+
+  <div class="table-wrap" style="padding: 18px;">
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-grid">
+        <label class="field">
+          <span>Tipo</span>
+          <select formControlName="accountType">
+            <option value="" disabled>Seleccione</option>
+            <option value="SAVINGS">Ahorros</option>
+            <option value="CHECKING">Corriente</option>
+          </select>
+          <small class="err" *ngIf="form.controls.accountType.touched && form.controls.accountType.invalid">
+            Tipo es requerido
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Saldo Inicial</span>
+          <input type="number" formControlName="initialBalance" />
+          <small class="err" *ngIf="form.controls.initialBalance.touched && form.controls.initialBalance.invalid">
+            Saldo inicial es requerido
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Cliente (ID)</span>
+          <input type="number" formControlName="clientId" />
+          <small class="err" *ngIf="form.controls.clientId.touched && form.controls.clientId.invalid">
+            Cliente es requerido
+          </small>
+        </label>
+
+        <label class="field field-inline">
+          <span>Activa</span>
+          <input type="checkbox" formControlName="active" />
+        </label>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn" type="button" (click)="cancel()">Cancelar</button>
+        <button class="btn btn-primary" type="submit" [disabled]="isLoading">
+          {{ mode === 'create' ? 'Crear' : 'Actualizar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

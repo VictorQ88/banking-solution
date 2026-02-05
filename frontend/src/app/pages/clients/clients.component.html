@@ -1,24 +1,26 @@
-<div class="clients-page">
-  <div class="clients-header">
+<div class="page">
+  <div class="page-header">
     <h1>Clientes</h1>
 
-    <div class="clients-actions">
+    <div class="page-actions">
       <input type="text" placeholder="Buscar" [(ngModel)]="searchText" (ngModelChange)="onSearchChange($event)" />
 
-      <button type="button" class="btn-new" (click)="goCreate()">
+      <button type="button" class="btn btn-primary" (click)="goCreate()">
         Nuevo
       </button>
     </div>
   </div>
 
-<div class="info-row" *ngIf="messageText">
-  <div class="alert" [class.alert-success]="messageType === 'success'" [class.alert-error]="messageType === 'error'">
+  <div class="alert alert-success" *ngIf="messageText && messageType === 'success'">
     {{ messageText }}
   </div>
-</div>
 
-  <div class="clients-table">
-    <table>
+  <div class="alert alert-error" *ngIf="messageText && messageType === 'error'">
+    {{ messageText }}
+  </div>
+
+  <div class="table-wrap">
+    <table class="table">
       <thead>
         <tr>
           <th>Nombre</th>
@@ -26,17 +28,17 @@
           <th>Teléfono</th>
           <th>Código Cliente</th>
           <th>Estado</th>
-          <th>Acciones</th>
+          <th class="th-actions">Acciones</th>
         </tr>
       </thead>
 
       <tbody>
         <tr *ngIf="isLoading">
-          <td colspan="6">Cargando...</td>
+          <td colspan="6" class="muted">Cargando...</td>
         </tr>
 
         <tr *ngIf="!isLoading && filteredClients.length === 0">
-          <td colspan="6">Sin resultados</td>
+          <td colspan="6" class="muted">Sin resultados</td>
         </tr>
 
         <tr *ngFor="let client of filteredClients; trackBy: trackById">
@@ -45,12 +47,13 @@
           <td>{{ client.phone }}</td>
           <td>{{ client.clientId }}</td>
           <td>
-            <span class="status active" *ngIf="client.active">Activo</span>
-            <span class="status" *ngIf="!client.active">Inactivo</span>
+            <span class="pill" [class.pill-on]="client.active" [class.pill-off]="!client.active">
+              {{ client.active ? 'Activo' : 'Inactivo' }}
+            </span>
           </td>
-          <td class="actions">
-            <a (click)="goEdit(client)">Editar</a>
-            <button (click)="deleteClient(client)">Eliminar</button>
+          <td class="td-actions">
+            <button class="btn btn-ghost" type="button" (click)="goEdit(client)">Editar</button>
+            <button class="btn btn-danger" type="button" (click)="deleteClient(client)">Eliminar</button>
           </td>
         </tr>
       </tbody>

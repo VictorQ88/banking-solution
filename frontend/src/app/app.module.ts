@@ -13,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ClientFormComponent } from './pages/clients/client-form/client-form.component';
+import { AccountFormComponent } from './pages/accounts/account-form/account-form.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ClientFormComponent } from './pages/clients/client-form/client-form.com
     ClientsComponent,
     ClientFormComponent,
     AccountsComponent,
+    AccountFormComponent,
     MovementsComponent,
     ReportsComponent,
   ],
