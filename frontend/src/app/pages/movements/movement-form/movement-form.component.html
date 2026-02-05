@@ -10,9 +10,28 @@
   <div class="table-wrap" style="padding: 18px;">
     <form [formGroup]="form" (ngSubmit)="submit()">
       <div class="form-grid">
+
         <label class="field">
-          <span>Cuenta (ID)</span>
-          <input type="number" formControlName="accountId" />
+          <span>Cliente</span>
+          <select formControlName="clientId">
+            <option value="" disabled>Seleccione</option>
+            <option *ngFor="let c of clients; trackBy: trackByClientId" [ngValue]="c.id">
+              {{ c.name }} ({{ c.identification }})
+            </option>
+          </select>
+          <small class="err" *ngIf="form.controls.clientId.touched && form.controls.clientId.invalid">
+            Cliente es requerido
+          </small>
+        </label>
+
+        <label class="field">
+          <span>Cuenta</span>
+          <select formControlName="accountId" [disabled]="accounts.length === 0">
+            <option value="" disabled>Seleccione</option>
+            <option *ngFor="let a of accounts; trackBy: trackByAccountId" [ngValue]="a.id">
+              {{ a.accountNumber }} - {{ a.accountType }}
+            </option>
+          </select>
           <small class="err" *ngIf="form.controls.accountId.touched && form.controls.accountId.invalid">
             Cuenta es requerida
           </small>
@@ -37,6 +56,7 @@
             Valor debe ser mayor a 0
           </small>
         </label>
+
       </div>
 
       <div class="form-actions">

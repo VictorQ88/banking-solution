@@ -1,5 +1,6 @@
 package com.banking.solution.repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,4 +18,19 @@ public interface MovementRepository extends JpaRepository<Movement, Long> {
 
     @Query("SELECT m FROM Movement m WHERE m.account.id = :accountId ORDER BY m.movementDate DESC")
     List<Movement> findByAccountId(@Param("accountId") Long accountId);
+
+    @Query("""
+            SELECT m
+            FROM Movement m
+            JOIN m.account a
+            JOIN a.client c
+            WHERE c.id = :clientId
+            AND m.movementDate BETWEEN :from AND :to
+            ORDER BY a.id, m.movementDate
+            """)
+    List<Movement> report(
+            @Param("clientId") Long clientId,
+            @Param("from") LocalDateTime from,
+            @Param("to") LocalDateTime to
+    );
 }

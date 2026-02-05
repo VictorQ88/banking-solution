@@ -1,10 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
-import { MovementService } from '../../../services/movement.service';
+import { Client } from '../../../models/client.model';
+import { Account } from '../../../models/account.model';
 import { Movement } from '../../../models/movement.model';
+
+import { ClientService } from '../../../services/client.service';
+import { AccountService } from '../../../services/account.service';
+import { MovementService } from '../../../services/movement.service';
 
 @Component({
   selector: 'app-movement-form',
@@ -13,29 +18,55 @@ import { Movement } from '../../../models/movement.model';
   styleUrls: ['./movement-form.component.css'],
 })
 export class MovementFormComponent implements OnInit {
+  form: any;
   isLoading = false;
   errorMessage = '';
-  form: any;
+
+  clients: Client[] = [];
+  accounts: Account[] = [];
 
   constructor(
     private readonly fb: FormBuilder,
     private readonly router: Router,
-    private readonly route: ActivatedRoute,
+    private readonly clientService: ClientService,
+    private readonly accountService: AccountService,
     private readonly movementService: MovementService,
   ) {}
 
   ngOnInit(): void {
-    const accountIdParam = this.route.snapshot.queryParamMap.get('accountId');
-
     this.form = this.fb.nonNullable.group({
-      accountId: [accountIdParam ? Number(accountIdParam) : 0, [Validators.required, Validators.min(1)]],
-      movementType: ['', [Validators.required]],
-      value: [0, [Validators.required, Validators.min(0.01)]],
+      clientId: ['', Validators.required],
+      accountId: ['', Validators.required],
+      movementType: ['', Validators.required],
+      value: [0, [Validators.required, Validators.min(1)]],
+    });
+
+    this.loadClients();
+
+    this.form.controls.clientId.valueChanges.subscribe((clientId: number) => {
+      this.form.controls.accountId.reset('');
+      this.accounts = [];
+
+      if (clientId) {
+        this.loadAccounts(clientId);
+      }
     });
   }
 
-  cancel(): void {
-    this.router.navigate(['/movements']);
+  private loadClients(): void {
+    this.clientService.findAll().subscribe({
+      next: (data) => (this.clients = data.filter((c) => c.active)),
+      error: () => (this.errorMessage = 'Error cargando clientes'),
+    });
+  }
+
+  private loadAccounts(clientId: number): void {
+    this.accountService.findAll().subscribe({
+      next: (data) => {
+        this.accounts = data.filter((a) => a.clientId === clientId && a.active);
+      },
+      error: () => (this.errorMessage = 'Error cargando cuentas'),
+    });
   }
 
   submit(): void {
@@ -43,19 +74,11 @@ export class MovementFormComponent implements OnInit {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
 
+    const payload = this.form.getRawValue() as Movement;
+
     this.isLoading = true;
-
-    const payload = this.form.getRawValue();
-
-    // backend calcula balance y normaliza signo según movementType
-    const req: any = {
-      accountId: payload.accountId,
-      movementType: payload.movementType,
-      value: payload.value,
-    };
-
     this.movementService
-      .create(req as Movement)
+      .create(payload)
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe({
         next: () =>
@@ -64,21 +87,19 @@ export class MovementFormComponent implements OnInit {
           }),
         error: (err) =>
           (this.errorMessage =
-            this.getApiMessage(err) || 'Error registrando movimiento'),
+            err?.error?.message || 'Error registrando movimiento'),
       });
   }
 
-  private getApiMessage(err: any): string {
-    const body = err?.error;
+  cancel(): void {
+    this.router.navigate(['/movements']);
+  }
 
-    if (body?.fields && typeof body.fields === 'object') {
-      const firstKey = Object.keys(body.fields)[0];
-      if (firstKey) return `${firstKey}: ${body.fields[firstKey]}`;
-    }
+  trackByClientId(_: number, c: Client) {
+    return c.id;
+  }
 
-    if (typeof body?.error === 'string') return body.error;
-    if (typeof body?.message === 'string') return body.message;
-
-    return '';
+  trackByAccountId(_: number, a: Account) {
+    return a.id;
   }
 }
