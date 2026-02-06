@@ -12,7 +12,7 @@ Aplicación Full Stack (Spring Boot + PostgreSQL + Angular) para gestionar **Cli
 
 En la raíz del repositorio (donde está `docker-compose.yml`):
 
-```bash
+
 docker compose up --build
 
 
